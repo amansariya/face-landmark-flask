@@ -70,7 +70,6 @@ prompt-toolkit==3.0.17
 protobuf==3.19.3
 pycparser==2.20
 Pygments==2.9.0
-pygpu==0.7.6
 pyOpenSSL==20.0.1
 pyparsing==2.4.7
 PyQt5==5.12.3
