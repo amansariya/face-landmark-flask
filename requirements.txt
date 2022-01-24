@@ -14,6 +14,7 @@ PyQt5==5.12.3
 pyreadline==2.1
 PySocks==1.7.1
 python-dateutil==2.8.2
+opencv-python-headless==4.5.5.62
 opencv-contrib-python==4.5.5.62
 requests==2.25.1
 tensorflow==1.14.0
