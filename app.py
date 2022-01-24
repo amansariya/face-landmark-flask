@@ -136,7 +136,7 @@ def getDominantColor(image):
 	return color_values[str(np.argmax(color_sums))]
 	
 if __name__ == "__main__":
-	app.run(debug = True)
+	app.run()
 	#app.run(host= '0.0.0.0', port=80)
 
 
