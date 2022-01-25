@@ -1,6 +1,5 @@
 Flask==1.1.2
 gunicorn==20.1.0
-importlib-metadata==3.10.0
 Keras==2.7.0
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
@@ -9,9 +8,7 @@ matplotlib-inline==0.1.2
 numpy==1.21.4
 pyOpenSSL==20.0.1
 PyQt5==5.12.3
-pyreadline==2.1
 PySocks==1.7.1
-python-dateutil==2.8.2
 opencv_contrib_python_headless==4.5.5.62
 requests==2.25.1
 tensorflow==2.7.0
