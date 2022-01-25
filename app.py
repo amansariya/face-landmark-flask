@@ -42,9 +42,8 @@ def upload_file():
 			flash('No file selected.')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			image = cv2.imread(os.path.dirname(os.path.realpath(__file__))+"/uploads/"+filename)
+			uploadFile = request.files['file']
+			image = cv2.imdecode(np.fromstring(uploadFile.read(), np.uint8), cv2.IMREAD_UNCHANGED)
 			
 			apply_model(image)
 
