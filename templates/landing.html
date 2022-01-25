@@ -32,12 +32,18 @@
 <div class="text-center">
     {% if init %}
         {% if output %}
-            <div class="alert alert-success" style="margin-top:2px;">
-                Detected face landmarks!
-            </div>
-            <div>
-                <img src={{ url_for('static', filename='saved.png', code = 307) }}>
-            </div>
+            {% if faceDetected %}
+                <div class="alert alert-success" style="margin-top:2px;">
+                    Detected face landmarks!
+                </div>
+                <div>
+                    <img src={{ url_for('static', filename='saved.png', code = 307) }}>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" style="margin-top:2px;">
+                    <strong>Error:</strong> No face detected!
+                </div>
+            {% endif %}  
         {% else %}
             <div class="alert alert-danger" style="margin-top:18px;">
                 <strong>Error:</strong> Upload an image!
