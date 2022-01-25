@@ -21,20 +21,25 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+
 def allowed_file(filename):
 	return '.' in filename and \
 		   filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/")
+def start_page():
+    return render_template('landing.html')
+
+@app.route('/result', methods=['GET', 'POST'])
 def upload_file():
+	output = False
 	if request.method == 'POST':
-		# check if the post request has the file part
 		if 'file' not in request.files:
-			flash('No file part')
+			flash('No file part.')
 			return redirect(request.url)
 		file = request.files['file']
 		if file.filename == '':
-			flash('No selected file')
+			flash('No file selected.')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
@@ -43,58 +48,24 @@ def upload_file():
 			
 			apply_model(image)
 
-			#redirect(url_for('upload_file',filename='saved.png'))
-			
-			return render_template('home.html')
-			#'''
-			#<!doctype html>
-			#<title>Results</title>
-			#<h1>Image contains a - '''+result+'''</h1>
-			#<h2>Dominant color is - '''+color_result+'''</h2>
-			#<form method=post enctype=multipart/form-data>
-			#  <input type=file name=file>
-			#  <input type=submit value=Upload>
-			#</form>
-			#'''
-	return '''
-	<!doctype html>
-	<title>Upload new File</title>
-	<h1>Upload new File</h1>
-	<form method=post enctype=multipart/form-data>
-	  <input type=file name=file>
-	  <input type=submit value=Upload>
-	</form>
-	'''
+			output = True
+	
+	return render_template('landing.html', output = output, init = True)
 
 def apply_model(image):
 	image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	x, y, width, depth = 50, 200, 950, 500
 	image_cropped = image_rgb
-	#[y:(y+depth), x:(x+width)]
 	image_template = image_cropped.copy()
 	image_gray = cv2.cvtColor(image_cropped, cv2.COLOR_BGR2GRAY)
+
 	haarcascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_alt2.xml"
 	haarcascade = "haarcascade_frontalface_alt2.xml"
-	#if (haarcascade in os.listdir(os.curdir)):
-    #	print("File exists")
-	#else:
-    #	# download file from url and save locally as haarcascade_frontalface_alt2.xml, < 1MB
-    #	urlreq.urlretrieve(haarcascade_url, haarcascade)
-    #	print("File downloaded")
-
 	detector = cv2.CascadeClassifier(haarcascade)
 	faces = detector.detectMultiScale(image_gray)
+
 	LBFmodel_url = "https://github.com/kurnianggoro/GSOC2017/raw/master/data/lbfmodel.yaml"
-
-	# save facial landmark detection model's name as LBFmodel
 	LBFmodel = "lbfmodel.yaml"
-	#if (LBFmodel in os.listdir(os.curdir)):
-    #	print("File exists")
-	#else:
-	#	# download picture from url and save locally as lbfmodel.yaml, < 54MB
-    #	urlreq.urlretrieve(LBFmodel_url, LBFmodel)
-    #	print("File downloaded")
-
 	landmark_detector  = cv2.face.createFacemarkLBF()
 	landmark_detector.loadModel(LBFmodel)
 	_, landmarks = landmark_detector.fit(image_gray, faces)
